@@ -31,13 +31,19 @@ from modules.paths import script_path
 from modules.shared import cmd_opts
 
 modelloader.cleanup_models()
+print("clean up models")
 modules.sd_models.setup_model()
+print("sd model setup")
 codeformer.setup_model(cmd_opts.codeformer_models_path)
+print("codeformer model setup")
 gfpgan.setup_model(cmd_opts.gfpgan_models_path)
+print("gfpan model setup")
 shared.face_restorers.append(modules.face_restoration.FaceRestoration())
+print("face restorers appended")
 modelloader.load_upscalers()
+print("upscalers loaded")
 queue_lock = threading.Lock()
-
+print("Lock created")
 
 def wrap_queued_call(func):
     def f(*args, **kwargs):
@@ -76,11 +82,13 @@ def wrap_gradio_gpu_call(func, extra_outputs=None):
 
     return modules.ui.wrap_gradio_call(f, extra_outputs=extra_outputs)
 
-
+print("Prepare to load scripts")
 modules.scripts.load_scripts(os.path.join(script_path, "scripts"))
-
+print("Load Scripts")
 shared.sd_model = modules.sd_models.load_model()
+print("Load models")
 shared.opts.onchange("sd_model_checkpoint", wrap_queued_call(lambda: modules.sd_models.reload_model_weights(shared.sd_model)))
+print("opts onchange set")
 
 loaded_hypernetwork = modules.hypernetwork.load_hypernetwork(shared.opts.sd_hypernetwork)
 shared.opts.onchange("sd_hypernetwork", wrap_queued_call(lambda: modules.hypernetwork.load_hypernetwork(shared.opts.sd_hypernetwork)))
@@ -129,4 +137,5 @@ def webui():
 
 
 if __name__ == "__main__":
+    print("run main program")
     webui()

@@ -165,7 +165,9 @@ def load_model_weights(model, checkpoint_info):
 
 def load_model():
     from modules import lowvram, sd_hijack
+    print("modules import")
     checkpoint_info = select_checkpoint()
+    print("select checkpoint")
 
     if checkpoint_info.config != shared.cmd_opts.config:
         print(f"Loading config from: {checkpoint_info.config}")
@@ -175,8 +177,10 @@ def load_model():
     load_model_weights(sd_model, checkpoint_info)
 
     if shared.cmd_opts.lowvram or shared.cmd_opts.medvram:
+        print("run in low ram mode")
         lowvram.setup_for_low_vram(sd_model, shared.cmd_opts.medvram)
     else:
+        print("not run in low ram mode")
         sd_model.to(shared.device)
 
     sd_hijack.model_hijack.hijack(sd_model)
