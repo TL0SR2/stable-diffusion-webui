@@ -93,11 +93,11 @@ def initialize():
     modelloader.load_upscalers()
 
     modules.scripts.load_scripts(os.path.join(script_path, "scripts"))
-print("Load Scripts")
+    print("Load Scripts")
     shared.sd_model = modules.sd_models.load_model()
     print("Load models")
-shared.opts.onchange("sd_model_checkpoint", wrap_queued_call(lambda: modules.sd_models.reload_model_weights(shared.sd_model)))
-print("opts onchange set")
+    shared.opts.onchange("sd_model_checkpoint", wrap_queued_call(lambda: modules.sd_models.reload_model_weights(shared.sd_model)))
+    print("opts onchange set")
     shared.opts.onchange("sd_hypernetwork", wrap_queued_call(lambda: modules.hypernetworks.hypernetwork.load_hypernetwork(shared.opts.sd_hypernetwork)))
 
 
